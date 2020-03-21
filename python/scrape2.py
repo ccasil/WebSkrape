@@ -9,15 +9,15 @@ soup = BeautifulSoup(data.text, 'html.parser')
 
 # get data simply by looking for each tr
 data = []
-# for tr in soup.find_all('tr'):
-# 	values = [td.text for td in tr.find_all('td')]
-# 	data.append(values)
-
-# get data only where rows are marked as special
-data = []
-for tr in soup.find_all('tr', { 'class': 'special' }):
+for tr in soup.find_all('tr'):
 	values = [td.text for td in tr.find_all('td')]
 	data.append(values)
+
+# get data only where rows are marked as special
+# data = []
+# for tr in soup.find_all('tr', { 'class': 'special' }):
+# 	values = [td.text for td in tr.find_all('td')]
+# 	data.append(values)
 
 # get data within a specific element
 # data = []
