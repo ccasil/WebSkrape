@@ -1,17 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import sys
+if sys.version_info[0] < 3: 
+    from StringIO import StringIO
+else:
+    from io import StringIO
 
-MAINSTR = ''
+MAINSTR = 'TITLE,LINK,'
 
-exercisedatabasepages = []
+exercisedatabasepages = ['https://www.bodybuilding.com/exercises/muscle/chest']
 
-databasepage = 'https://www.bodybuilding.com/exercises'
-databasedata = requests.get(databasepage)
-soup = BeautifulSoup(databasedata.text, 'html.parser')
-leftside = soup.find('ul', {'class': 'exercise-list-left'})
-leftlinks = leftside.find_all('a')
-for item in leftlinks:
-    exercisedatabasepages.append('https://www.bodybuilding.com' + item['href'])
+# databasepage = 'https://www.bodybuilding.com/exercises'
+# databasedata = requests.get(databasepage)
+# soup = BeautifulSoup(databasedata.text, 'html.parser')
+# leftside = soup.find('ul', {'class': 'exercise-list-left'})
+# leftlinks = leftside.find_all('a')
+# for item in leftlinks:
+#     exercisedatabasepages.append('https://www.bodybuilding.com' + item['href'])
 
 # print(exercisedatabasepages)
 
@@ -42,7 +48,13 @@ for url in pages:
     elif 'images' in vidtxt:
         index = vidtxt.index('images')
     # print(div)
-    print(title.text.strip())
-    print ('https://content.jwplatform.com/videos/' + vidtxt[index + 1] + '-1zuboWt3.mp4')
+    # print(title.text.strip())
+    # print ('https://content.jwplatform.com/videos/' + vidtxt[index + 1] + '-1zuboWt3.mp4')
 
-    MAINSTR += title.text.strip() + ',' + 'https://content.jwplatform.com/videos/' + vidtxt[index + 1] + '-1zuboWt3.mp4,'
+    MAINSTR += '\"' + title.text.strip() + '\",' + 'https://content.jwplatform.com/videos/' + vidtxt[index + 1] + '-1zuboWt3.mp4,'
+    print(MAINSTR)
+
+TESTDATA = StringIO(MAINSTR)
+df = pd.read_csv(TESTDATA)
+# df.columns = ['title', 'link']
+df.to_csv('bb.csv', index=None)
